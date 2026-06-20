@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { createTurtle, stepTurtle, type Cardinal, type TurtleCommand, type TurtleConfig } from "@blp/engine";
-import { BLUE, GREEN, GREY, PAD, CELL, VB_W, VB_H, idxToXY, angleFor } from "../../lib/lesson-config";
+import { BLUE, GREEN, GREY, PAD, CELL, idxToXY, angleFor } from "../../lib/lesson-config";
 
 export function GemIcon() {
   return (
@@ -32,30 +32,32 @@ export function DeliveryMap({
   solved?: boolean;
 }) {
   const path = useMemo(() => {
-    const cells: Array<{ x: number; y: number }> = [idxToXY(config.start)];
+    const cells: Array<{ x: number; y: number }> = [idxToXY(config.start, config.width)];
     let s = createTurtle(config);
     for (const cmd of program) {
       s = stepTurtle(s, cmd);
-      cells.push(idxToXY(s.agent));
+      cells.push(idxToXY(s.agent, config.width));
       if (s.status === "won") break;
     }
     return cells;
   }, [config, program]);
 
-  const agentXY = idxToXY(agent);
-  const goalXY = idxToXY(config.goal);
+  const agentXY = idxToXY(agent, config.width);
+  const goalXY = idxToXY(config.goal, config.width);
   const walls = config.walls;
+  const viewBoxWidth = config.width * CELL + PAD * 2;
+  const viewBoxHeight = config.height * CELL + PAD * 2;
 
   return (
     <div className="map-wrap">
-      <svg viewBox={`0 0 ${VB_W} ${VB_H}`} className="map-svg" preserveAspectRatio="xMidYMid meet">
+      <svg viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} className="map-svg" preserveAspectRatio="xMidYMid meet">
         <defs>
           <pattern id="gridDots" width="10" height="10" patternUnits="userSpaceOnUse">
             <circle cx="1" cy="1" r="1" fill={BLUE[200]} />
           </pattern>
         </defs>
-        <rect width={VB_W} height={VB_H} fill={BLUE[50]} />
-        <rect width={VB_W} height={VB_H} fill="url(#gridDots)" />
+        <rect width={viewBoxWidth} height={viewBoxHeight} fill={BLUE[50]} />
+        <rect width={viewBoxWidth} height={viewBoxHeight} fill="url(#gridDots)" />
 
         {path.map((p, i) => (
           <rect
@@ -70,7 +72,7 @@ export function DeliveryMap({
         ))}
 
         {walls.map((w) => {
-          const { x, y } = idxToXY(w);
+          const { x, y } = idxToXY(w, config.width);
           return (
             <g key={`wall-${w}`}>
               <rect x={PAD + x * CELL + 4} y={PAD + y * CELL + 4} width={CELL - 8} height={CELL - 8} rx="6" fill={GREY[300]} />

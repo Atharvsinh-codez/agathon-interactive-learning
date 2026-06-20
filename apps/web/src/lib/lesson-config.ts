@@ -47,7 +47,7 @@ export const LEVELS: LevelSpec[] = [
   {
     id: 3,
     title: "Around the block",
-    prompt: "Drive, turn, and drive again to reach the gem.",
+    prompt: "Drive twice, turn right, then drive to the gem.",
     config: { width: 5, height: 5, start: 0, goal: 7, walls: [11, 12], maxSteps: 6, initialFacing: "right" },
     program: ["driveForward", "driveForward", "turnRight", "driveForward"],
     xp: 20,
@@ -95,8 +95,8 @@ export function verbForSlot(command: LessonCommand) {
   return command === "deliverPackage" ? "deliver" : verbFor(command);
 }
 
-export function idxToXY(idx: number) {
-  return { x: idx % COLS, y: Math.floor(idx / COLS) };
+export function idxToXY(idx: number, width = COLS) {
+  return { x: idx % width, y: Math.floor(idx / width) };
 }
 
 export function angleFor(facing: Cardinal) {
