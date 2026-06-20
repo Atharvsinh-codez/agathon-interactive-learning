@@ -1,0 +1,15 @@
+node_modules
+
+.next
+apps/*/.next
+apps/*/tsconfig.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+
+*.log
+.codex-*.log
+
+.claude
+.hermes

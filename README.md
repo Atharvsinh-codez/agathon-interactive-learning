@@ -20,3 +20,18 @@ npm test
 npm run build
 npm run start:web -- -p 3002
 ```
+
+## Deploy to Vercel
+
+This repository includes a root `vercel.json` configured for the learner-facing Next.js app in `apps/web`.
+
+Recommended Vercel import settings:
+
+- Framework Preset: `Next.js`
+- Root Directory: repository root
+- Install Command: `npm install`
+- Build Command: `npm run vercel-build`
+- Output Directory: `apps/web/.next`
+- Node.js Version: `22.x` from `package.json#engines`
+
+If the Vercel dashboard has old build overrides, reset them so the checked-in `vercel.json` is used.

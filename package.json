@@ -2,9 +2,15 @@
   "name": "brilliant-learning-platform",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "workspaces": ["apps/*", "packages/*", "services/*"],
   "scripts": {
     "dev:web": "npm --workspace @blp/web run dev",
+    "build:web": "npm --workspace @blp/web run build",
+    "typecheck:web": "tsc -p apps/web/tsconfig.json --noEmit",
+    "vercel-build": "npm run build:web",
     "build": "npm --workspaces --if-present run build",
     "test": "npm --workspaces --if-present run test",
     "lint": "npm --workspaces --if-present run lint",
