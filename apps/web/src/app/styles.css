@@ -42,6 +42,11 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+html.lenis,
+html.lenis body { height: auto; }
+html.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html.lenis.lenis-stopped { overflow: hidden; }
+html.lenis.lenis-scrolling iframe { pointer-events: none; }
 body {
   margin: 0; padding: 0;
   background: var(--bg);

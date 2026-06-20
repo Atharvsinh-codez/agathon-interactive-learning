@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import SmoothScroll from "../components/SmoothScroll";
 import "./styles.css";
 import "./redesign.css";
 
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script id="strip-extension-hydration-attrs" strategy="beforeInteractive">
           {stripExtensionHydrationAttrs}
         </Script>
+        <SmoothScroll />
         {children}
       </body>
     </html>

@@ -1,13 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { Globe2 } from "lucide-react";
 import KojiMascot from "../KojiMascot";
 
 export default function LandingPage({ onStart }: { onStart: () => void }) {
   const landingRef = useRef<HTMLElement | null>(null);
-  const [cursor, setCursor] = useState({ x: 120, y: 120 });
+  const prefersReducedMotion = useReducedMotion();
+  const cursorOrbX = useMotionValue(102);
+  const cursorOrbY = useMotionValue(102);
+  const cursorIconX = useMotionValue(134);
+  const cursorIconY = useMotionValue(130);
+  const smoothOrbX = useSpring(cursorOrbX, { stiffness: 115, damping: 24, mass: .5 });
+  const smoothOrbY = useSpring(cursorOrbY, { stiffness: 115, damping: 24, mass: .5 });
+  const smoothIconX = useSpring(cursorIconX, { stiffness: 140, damping: 22, mass: .45 });
+  const smoothIconY = useSpring(cursorIconY, { stiffness: 140, damping: 22, mass: .45 });
   const [subject, setSubject] = useState<"Math" | "CS" | "Science" | "Data">("Math");
 
   const subjectData = {
@@ -20,6 +28,7 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
   useEffect(() => {
     let cleanup = () => {};
     let mounted = true;
+    if (prefersReducedMotion) return () => { mounted = false; cleanup(); };
     (async () => {
       const gsapModule = await import("gsap");
       const scrollModule = await import("gsap/ScrollTrigger");
@@ -29,15 +38,15 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
       gsap.registerPlugin(ScrollTrigger);
       const ctx = gsap.context(() => {
         gsap.utils.toArray<HTMLElement>(".gsap-reveal").forEach((item, index) => {
-          gsap.fromTo(item, { y: 34, opacity: 0, filter: "blur(8px)" }, {
-            y: 0, opacity: 1, filter: "blur(0px)", duration: .85, delay: (index % 4) * .04, ease: "power3.out",
-            immediateRender: false, clearProps: "transform,filter,opacity",
+          gsap.fromTo(item, { y: 24, opacity: 0 }, {
+            y: 0, opacity: 1, duration: .65, delay: (index % 4) * .035, ease: "power3.out",
+            immediateRender: false, clearProps: "transform,opacity,willChange",
             scrollTrigger: { trigger: item, start: "top 92%", once: true },
           });
         });
         gsap.utils.toArray<HTMLElement>(".gsap-section").forEach((section) => {
-          gsap.fromTo(section, { y: 42 }, {
-            y: 0, duration: 1.05, ease: "power3.out", immediateRender: false, clearProps: "transform",
+          gsap.fromTo(section, { y: 28 }, {
+            y: 0, duration: .8, ease: "power3.out", immediateRender: false, clearProps: "transform,willChange",
             scrollTrigger: { trigger: section, start: "top 86%", once: true },
           });
         });
@@ -50,7 +59,18 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
       cleanup = () => ctx.revert();
     })();
     return () => { mounted = false; cleanup(); };
-  }, []);
+  }, [prefersReducedMotion]);
+
+  const moveCursor = useCallback((event: PointerEvent<HTMLElement>) => {
+    if (prefersReducedMotion || event.pointerType !== "mouse") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    cursorOrbX.set(x - 18);
+    cursorOrbY.set(y - 18);
+    cursorIconX.set(x + 14);
+    cursorIconY.set(y + 10);
+  }, [cursorIconX, cursorIconY, cursorOrbX, cursorOrbY, prefersReducedMotion]);
 
   void subjectData;
   void setSubject;
@@ -62,13 +82,10 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      onPointerMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        setCursor({ x: event.clientX - rect.left, y: event.clientY - rect.top });
-      }}
+      onPointerMove={moveCursor}
     >
-      <motion.div className="live-cursor-orb" animate={{ x: cursor.x - 18, y: cursor.y - 18 }} transition={{ type: "spring", stiffness: 95, damping: 22, mass: .55 }} aria-hidden="true" />
-      <motion.svg className="live-cursor-svg" viewBox="0 0 64 64" animate={{ x: cursor.x + 14, y: cursor.y + 10, rotate: [-8, -2, -8] }} transition={{ x: { type: "spring", stiffness: 120, damping: 20 }, y: { type: "spring", stiffness: 120, damping: 20 }, rotate: { duration: 2.8, repeat: Infinity, ease: "easeInOut" } }} aria-hidden="true">
+      <motion.div className="live-cursor-orb" style={{ x: smoothOrbX, y: smoothOrbY }} aria-hidden="true" />
+      <motion.svg className="live-cursor-svg" viewBox="0 0 64 64" style={{ x: smoothIconX, y: smoothIconY }} animate={prefersReducedMotion ? undefined : { rotate: [-8, -2, -8] }} transition={{ rotate: { duration: 2.8, repeat: Infinity, ease: "easeInOut" } }} aria-hidden="true">
         <path d="M10 6L54 38L34 43L25 61L10 6Z" fill="#111" />
         <path d="M14 13L47 36L30 39L24 52L14 13Z" fill="#fff" />
       </motion.svg>
