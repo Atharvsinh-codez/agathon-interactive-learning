@@ -26,11 +26,11 @@ export default function BrilliantOnboarding({ onDone }: { onDone: (courseId: Cou
   const canContinue = step === 0 ? !!motivation : step === 1 ? age.trim().length > 0 : !!subject;
 
   function next() {
-    setStep((s) => {
-      if (s < totalSteps - 1) return s + 1;
-      onDone(subject ?? "code");
-      return s;
-    });
+    if (step < totalSteps - 1) {
+      setStep((s) => s + 1);
+      return;
+    }
+    onDone(subject ?? "code");
   }
 
   function back() {
