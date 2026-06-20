@@ -119,7 +119,7 @@ export default function TruckLesson({ onExit, onSolved, level }: { onExit: () =>
     ];
 
   return (
-    <motion.div className={`lesson-stage ${shake ? "shake" : ""}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <motion.div className={`lesson-stage ${result === "solved" ? "is-solved" : ""} ${shake ? "shake" : ""}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <div className="lesson-topbar">
         <button className="close-btn" aria-label="close" onClick={() => setShowQuitConfirm(true)}>×</button>
         <div className="lesson-dots" style={{ flex: 1, justifyContent: "center" }}>
@@ -141,7 +141,7 @@ export default function TruckLesson({ onExit, onSolved, level }: { onExit: () =>
 
         <section className="mission-card lesson-board-panel">
           {result === "solved" && (
-            <div className="success-banner"><span className="env">✓</span> Deliveries complete!</div>
+            <div className="success-banner" role="status"><span className="env">✓</span> Deliveries complete!</div>
           )}
           <div className="mission-meta">
             <span className="mission-left"><GemIcon /> 1 left</span>
@@ -202,7 +202,7 @@ export default function TruckLesson({ onExit, onSolved, level }: { onExit: () =>
 
       <AnimatePresence>
         {result === "solved" && (
-          <motion.div className="correct-sheet" initial={{ opacity: 0, x: "-50%", y: 120 }} animate={{ opacity: 1, x: "-50%", y: 0 }} exit={{ opacity: 0, x: "-50%", y: 80 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div className="correct-sheet" role="status" initial={{ opacity: 0, x: "-50%", y: 120 }} animate={{ opacity: 1, x: "-50%", y: 0 }} exit={{ opacity: 0, x: "-50%", y: 80 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
             <div className="correct-left"><span>✓</span><div><b>Correct!</b><em>+{spec.xp} XP</em></div></div>
             <button className="why-btn" onClick={() => setShowWhy(true)}>Why?</button>
             <button className="continue-btn sheet-continue" onClick={onSolved}>Continue</button>
