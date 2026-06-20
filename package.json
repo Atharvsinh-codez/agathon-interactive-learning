@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "workspaces": ["apps/*", "packages/*", "services/*"],
   "scripts": {
+    "dev": "npm run dev:web",
     "dev:web": "npm --workspace @blp/web run dev",
     "build:web": "npm --workspace @blp/web run build",
     "typecheck:web": "tsc -p apps/web/tsconfig.json --noEmit",
