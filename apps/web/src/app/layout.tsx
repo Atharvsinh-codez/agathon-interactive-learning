@@ -1,6 +1,29 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./styles.css";
 import "./redesign.css";
+
+const stripExtensionHydrationAttrs = `
+(() => {
+  const shouldRemove = (name) =>
+    name === "bis_skin_checked" ||
+    name === "bis_register" ||
+    name.startsWith("__processed_");
+
+  const clean = (root) => {
+    if (!root || !root.querySelectorAll) return;
+    const nodes = root.querySelectorAll("*");
+    for (const node of nodes) {
+      for (const attr of Array.from(node.attributes || [])) {
+        if (shouldRemove(attr.name)) node.removeAttribute(attr.name);
+      }
+    }
+  };
+
+  clean(document);
+  requestAnimationFrame(() => clean(document));
+})();
+`;
 
 export const metadata: Metadata = {
   title: "Agathon — Interactive Learning",
@@ -16,5 +39,14 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en"><body>{children}</body></html>;
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <Script id="strip-extension-hydration-attrs" strategy="beforeInteractive">
+          {stripExtensionHydrationAttrs}
+        </Script>
+        {children}
+      </body>
+    </html>
+  );
 }
