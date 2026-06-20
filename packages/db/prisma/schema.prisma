@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProblemKind {
+  circuit
+  gridworld
+  graph
+  mcq
+}
+
+enum ReviewState {
+  draft
+  ai_validated
+  design_review
+  correctness_review
+  approved
+  published
+  rejected
+  revision_requested
+}
+
+model Course {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  units     Unit[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Unit {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+  title     String
+  order     Int
+  lessons   Lesson[]
+}
+
+model Lesson {
+  id        String    @id @default(cuid())
+  unitId    String
+  unit      Unit      @relation(fields: [unitId], references: [id])
+  title     String
+  order     Int
+  problems  Problem[]
+}
+
+model LearningObjective {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  title       String
+  description String
+  problems    Problem[]
+}
+
+model Problem {
+  id                  String             @id @default(cuid())
+  lessonId            String
+  lesson              Lesson             @relation(fields: [lessonId], references: [id])
+  learningObjectiveId String
+  learningObjective   LearningObjective  @relation(fields: [learningObjectiveId], references: [id])
+  kind                ProblemKind
+  schemaVersion       String
+  config              Json
+  solutions           Solution[]
+  validationRules     ValidationRule[]
+  variants            ProblemVariant[]    @relation("ParentProblem")
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+}
+
+model ProblemVariant {
+  id              String      @id @default(cuid())
+  parentProblemId String
+  parentProblem   Problem     @relation("ParentProblem", fields: [parentProblemId], references: [id])
+  config          Json
+  generationMeta  Json
+  reviewState     ReviewState @default(draft)
+  reviewLogs      ReviewLog[]
+  createdAt       DateTime    @default(now())
+}
+
+model Solution {
+  id        String  @id @default(cuid())
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id])
+  steps     Json
+  isCanonical Boolean @default(true)
+}
+
+model ValidationRule {
+  id        String  @id @default(cuid())
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id])
+  name      String
+  rule      Json
+}
+
+model ReviewLog {
+  id         String         @id @default(cuid())
+  variantId  String
+  variant    ProblemVariant @relation(fields: [variantId], references: [id])
+  fromState  ReviewState?
+  toState    ReviewState
+  reviewer   String
+  notes      String
+  createdAt  DateTime       @default(now())
+}
+
+model UserProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  problemId String
+  status    String
+  attempts  Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+model MasteryState {
+  id                  String   @id @default(cuid())
+  userId              String
+  learningObjectiveId String
+  strength            Float    @default(0)
+  dueAt               DateTime
+  updatedAt           DateTime @updatedAt
+
+  @@unique([userId, learningObjectiveId])
+}

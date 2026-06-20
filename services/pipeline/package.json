@@ -1,0 +1,16 @@
+{
+  "name": "@blp/pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@blp/engine": "*",
+    "@blp/schema": "*",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": { "typescript": "^5.6.3" }
+}
