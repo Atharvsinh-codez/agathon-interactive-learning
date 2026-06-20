@@ -758,3 +758,157 @@ html:has(.rx-onb), body:has(.rx-onb) { background: #ffffff !important; }
 .rx-nav-logo-mark { width: 30px; height: 30px; border-radius: 9px; object-fit: cover; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,123,167,.35); }
 .brilliant-landing .b-logo { display: inline-flex; align-items: center; gap: 11px; }
 .brilliant-landing .b-logo-mark { width: 38px; height: 38px; border-radius: 11px; object-fit: cover; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,123,167,.4); }
+
+.brilliant-landing .stat-lucide {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* =====================================================================
+   TRUCK LESSON POLISH — final overrides over the legacy lesson CSS.
+   ===================================================================== */
+.lesson-stage::before {
+  content: none !important;
+  display: none !important;
+}
+
+.lesson-stage .lesson-workspace-shell {
+  align-items: stretch !important;
+}
+
+.lesson-stage .lesson-brief-panel,
+.lesson-stage .lesson-command-panel,
+.lesson-stage .mission-card.lesson-board-panel {
+  border-radius: 28px !important;
+  background: rgba(255, 253, 248, .92) !important;
+  border: 1px solid rgba(24, 18, 10, .08) !important;
+  box-shadow: 0 18px 48px rgba(24, 18, 10, .08) !important;
+}
+
+.lesson-stage .lesson-brief-panel,
+.lesson-stage .lesson-command-panel {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.lesson-stage .desktop-lesson-coach {
+  position: relative !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 132px !important;
+  margin-top: auto !important;
+  display: grid !important;
+  grid-template-columns: 92px 1fr !important;
+  align-items: end !important;
+  gap: 12px !important;
+}
+
+.lesson-stage .coach-koji {
+  position: relative !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: 88px !important;
+  height: 88px !important;
+  grid-column: 1 !important;
+  filter: drop-shadow(0 14px 24px rgba(88, 204, 2, .20)) !important;
+}
+
+.lesson-stage .coach-bubble {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  grid-column: 2 !important;
+  width: 100% !important;
+  min-height: 76px !important;
+  padding: 14px 16px !important;
+  border-radius: 18px 18px 18px 6px !important;
+  border: 1px solid rgba(0, 123, 167, .16) !important;
+  background: #fff !important;
+  color: #16120c !important;
+  box-shadow: 0 14px 32px rgba(24, 18, 10, .07) !important;
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+}
+
+.lesson-stage .coach-actions {
+  display: none !important;
+}
+
+.lesson-stage .lesson-command-panel {
+  overflow: hidden !important;
+}
+
+.lesson-stage .slot-card,
+.lesson-stage .block-card {
+  flex: 0 0 auto !important;
+}
+
+.lesson-stage .footer-bar {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  margin-top: auto !important;
+  padding: 24px 0 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  background: transparent !important;
+  z-index: 2 !important;
+}
+
+.lesson-stage .brilliant-mark {
+  display: none !important;
+}
+
+.lesson-stage .check-btn {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 58px !important;
+  border-radius: 18px !important;
+  background: #e8e2d7 !important;
+  color: rgba(24, 18, 10, .38) !important;
+  box-shadow: none !important;
+  font-family: var(--rx-sans, "Inter", ui-sans-serif, system-ui, sans-serif) !important;
+  font-size: 17px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.lesson-stage .check-btn:not(:disabled) {
+  background: linear-gradient(180deg, #6fe016, #58cc02) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 0 #46a302, 0 16px 32px rgba(88, 204, 2, .22) !important;
+}
+
+.lesson-stage .check-btn:not(:disabled):hover {
+  transform: translateY(-2px) !important;
+}
+
+.lesson-tutor-card .tutor-input b svg,
+.quit-confirm-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+@media (max-width: 920px) {
+  .lesson-stage .desktop-lesson-coach {
+    margin-top: 18px !important;
+  }
+
+  .lesson-stage .footer-bar {
+    padding-top: 18px !important;
+  }
+}

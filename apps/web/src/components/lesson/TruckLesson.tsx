@@ -136,7 +136,6 @@ export default function TruckLesson({ onExit, onSolved, level }: { onExit: () =>
           <div className="desktop-lesson-coach">
             <div className="coach-bubble">Let's add a new command:<br/>delivering packages.</div>
             <KojiMascot className="coach-koji" mood="thinking" />
-            <div className="coach-actions"><button>💬</button><button>🎙</button></div>
           </div>
         </section>
 

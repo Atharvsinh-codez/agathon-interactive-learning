@@ -4411,7 +4411,7 @@ button:active {
   .lesson-stage .code-block.selectable .param { color: #4167ff !important; font-weight: 400 !important; }
 
   .lesson-stage::before {
-    content: "⚑\A\A🔊" !important;
+    content: none !important;
     white-space: pre !important;
     position: absolute !important;
     left: 69px !important;

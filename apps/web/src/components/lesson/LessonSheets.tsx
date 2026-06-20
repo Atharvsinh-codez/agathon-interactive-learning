@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { LogOut, Mic } from "lucide-react";
 import KojiMascot from "../KojiMascot";
 
 export function WhyTutorSheet({ onClose }: { onClose: () => void }) {
@@ -47,7 +48,7 @@ export function LessonTutorSheet({ onClose }: { onClose: () => void }) {
           <p>Let’s add a new command: <b>delivering packages.</b></p>
           <p>Drive forward and deliver the package.</p>
         </div>
-        <div className="tutor-input"><span>How can I help?</span><b>🎙</b></div>
+        <div className="tutor-input"><span>How can I help?</span><b><Mic strokeWidth={2.25} /></b></div>
         <button className="tutor-got" onClick={onClose}>Let’s try it</button>
       </motion.div>
     </motion.div>
@@ -58,7 +59,7 @@ export function QuitConfirmSheet({ onKeepLearning, onQuit }: { onKeepLearning: (
   return (
     <motion.div className="quit-confirm-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }} onClick={onKeepLearning}>
       <motion.div className="quit-confirm-sheet" role="dialog" aria-modal="true" aria-labelledby="quit-confirm-title" initial={{ y: 110, opacity: 0, scale: .96 }} animate={{ y: 0, opacity: 1, scale: 1 }} exit={{ y: 86, opacity: 0, scale: .98 }} transition={{ duration: .42, ease: [0.22, 1, 0.36, 1] }} onClick={(event) => event.stopPropagation()}>
-        <div className="quit-confirm-icon" aria-hidden="true">⚑</div>
+        <div className="quit-confirm-icon" aria-hidden="true"><LogOut strokeWidth={2.25} /></div>
         <h2 id="quit-confirm-title">Are you sure?</h2>
         <p>If you quit, you will lose your progress and XP.</p>
         <button className="quit-keep-btn" onClick={onKeepLearning}>Keep learning</button>

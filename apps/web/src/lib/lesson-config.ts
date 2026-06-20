@@ -102,9 +102,3 @@ export function idxToXY(idx: number) {
 export function angleFor(facing: Cardinal) {
   return facing === "right" ? 0 : facing === "down" ? 90 : facing === "left" ? 180 : 270;
 }
-
-export function goToStage(stage: Stage) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem("blp:stage", stage);
-  window.location.reload();
-}

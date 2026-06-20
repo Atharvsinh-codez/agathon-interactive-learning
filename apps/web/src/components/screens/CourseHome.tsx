@@ -68,13 +68,13 @@ export default function CourseHome({
   courseId,
   onSelectCourse,
 }: {
-  onContinue: () => void;
+  onContinue: (id: CourseId) => void;
   courseId: CourseId;
   onSelectCourse: (id: CourseId) => void;
 }) {
   return (
     <div className={`rx-home accent-${getCourse(courseId).accent}`}>
-      <AppTopNav active="home" />
+      <AppTopNav active="home" courseId={courseId} />
 
       <main className="rx-home-shell">
         {/* ---------------- SIDEBAR ---------------- */}
@@ -143,7 +143,7 @@ export default function CourseHome({
                   id={id}
                   selected={id === courseId}
                   onSelect={() => onSelectCourse(id)}
-                  onStart={onContinue}
+                  onStart={() => onContinue(id)}
                 />
               </motion.div>
             ))}

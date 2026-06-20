@@ -9,17 +9,23 @@ import { getCourse, type CourseId } from "../../lib/courses";
 export default function SkillCheckIntro({
   onStart,
   courseId,
+  currentIndex = 0,
 }: {
   onStart: () => void;
   courseId: CourseId;
+  currentIndex?: number;
 }) {
   const course = getCourse(courseId);
-  const activeNode = course.nodes[0];
-  const nodes = course.nodes.map((n, i) => ({ ...n, state: i === 0 ? "active" : "locked" as const }));
+  const activeIndex = Math.min(currentIndex, course.nodes.length - 1);
+  const activeNode = course.nodes[activeIndex];
+  const nodes = course.nodes.map((n, i) => ({
+    ...n,
+    state: i < activeIndex ? "done" : i === activeIndex ? "active" : "locked" as const,
+  }));
 
   return (
     <div className={`rx-skill accent-${course.accent}`}>
-      <AppTopNav active="path" />
+      <AppTopNav active="path" courseId={courseId} />
 
       <main className="rx-skill-shell">
         {/* ---------- course card ---------- */}

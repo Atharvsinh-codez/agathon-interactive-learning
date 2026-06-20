@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Globe2 } from "lucide-react";
 import KojiMascot from "../KojiMascot";
 
 export default function LandingPage({ onStart }: { onStart: () => void }) {
@@ -130,7 +131,7 @@ export default function LandingPage({ onStart }: { onStart: () => void }) {
           <p>5-star app store reviews</p>
         </motion.div>
         <motion.div className="stat-pill-card gsap-reveal" whileHover={{ y: -5, scale: 1.01 }}>
-          <span className="stat-icon">🌎</span>
+          <span className="stat-icon"><Globe2 className="stat-lucide" strokeWidth={2.2} /></span>
           <h2>10 million+</h2>
           <p>learners around the world</p>
         </motion.div>
